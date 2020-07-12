@@ -38,7 +38,7 @@ def log_command(message):
 
 def log_response(message):
     """Log a response by the bot."""
-    print('* Sending back:\n{}'.format(message))
+    print('* Sending back: {}'.format(message))
 
 
 @client.event
@@ -65,7 +65,7 @@ async def on_message(message):
 
     # Log and send the reply to the specified channel
     log_response(msg)
-    await client.send_message(client.get_channel(config.channel_id), msg)
+    await message.channel.send(msg)
 
 
 @client.event
