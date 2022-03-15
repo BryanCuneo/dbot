@@ -1,24 +1,16 @@
-try:
-    import tomllib  # Python 3.11+ - PEP 680
-except ImportError:
-    import tomli
+from discord.ext import commands
 
-# Load the config file
-with open("config.toml", "rb") as f:
-    try:
-        config = tomllib.load(f)
-    except NameError:
-        config = tomli.load(f)
+from config_loader import config
 
 
-def _about():
-    "Information about this bot"
-    return config["about_message"]
+class DbotDefaultCommands(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def about(self, ctx):
+        await ctx.send(config["about_message"])
 
 
-def define_commands():
-    commands = {
-        "!about": _about,
-    }
-
-    return commands
+def setup(bot):
+    bot.add_cog(DbotDefaultCommands(bot))
