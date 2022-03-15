@@ -18,7 +18,7 @@ User ID: {0.user.id}
 
     def __init__(self, plugins_dir):
         # initialize discord.Client
-        super().__init__(command_prefix="!")
+        super().__init__(command_prefix=config["command_prefix"])
 
         self.load_extension("plugins.dbot_default_commands")
 

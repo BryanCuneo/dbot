@@ -1,9 +1,7 @@
 # Discord OATH token - https://discordapp.com/developers/docs/topics/oauth2
 dbot_access_token = ""
 
-# The ID of the default channel you wish the bot to send it's messages to.  If left
-# blank, then the reply will go to the same channel the command came from.
-channel_id = ""
+command_prefix = "!"
 
 # Directory to store plugins in.
 plugins_dir = "./plugins"
