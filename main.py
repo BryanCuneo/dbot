@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """A small Discord bot framework."""
-# import discord
+import os
+
 from discord.ext import commands
 
 from config_loader import config
@@ -20,7 +21,9 @@ User ID: {0.user.id}
         # initialize discord.Client
         super().__init__(command_prefix=config["command_prefix"])
 
-        self.load_extension("plugins.dbot_default_commands")
+        for plugin in os.listdir(plugins_dir):
+            if plugin != "__pycache__":
+                self.load_extension("plugins.{0}".format(plugin))
 
     async def on_ready(self):
         print(Dbot.startupMsg.format(self))
