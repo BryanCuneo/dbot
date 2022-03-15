@@ -6,20 +6,27 @@ import default_commands
 import plugin_loader
 
 try:
-    import config
+    import tomllib  # Python 3.11+ - PEP 680
 except ImportError:
-    error = """
-ERROR: Could not find configuration file 'config.py'
-Please see the included 'config_template.py'
-"""
-    print(error)
-    exit()
+    import tomli
+
+# Load the config file
+with open("config.toml", "rb") as f:
+    try:
+        config = tomllib.load(f)
+    except "NameError":
+        config = tomli.load(f)
+
+# Make sure all config options are present
+for key in config.keys():
+    if not config[key] or x.isspace():
+        print("Configuration Error: '{0}' does not exist. Exiting.".format(key))
 
 # Load plugins
 commands = default_commands.define_commands()
 
 for p in plugin_loader.get_plugins(config.plugins_dir):
-    print('Loading plugin {}...'.format(p['name']))
+    print("Loading plugin {}...".format(p["name"]))
     plugin = plugin_loader.load_plugin(p)
 
     commands = {**commands, **plugin.define_commands()}
@@ -30,15 +37,12 @@ client = discord.Client()
 
 def log_command(message):
     """Log commands to the console."""
-    print('* Received command - \'{}\' from {}'.format(
-        message.content,
-        message.author
-    ))
+    print("* Received command - '{}' from {}".format(message.content, message.author))
 
 
 def log_response(message):
     """Log a response by the bot."""
-    print('* Sending back: {}'.format(message))
+    print("* Sending back: {}".format(message))
 
 
 @client.event
@@ -46,7 +50,7 @@ async def on_message(message):
     """Receive and respond to messages beginning with '!'."""
     # Ignore messages not starting with '!' as well as messages originating
     # from the bot itself
-    if not message.content.startswith('!') or message.author == client.user:
+    if not message.content.startswith("!") or message.author == client.user:
         return
 
     log_command(message)
@@ -55,13 +59,10 @@ async def on_message(message):
     try:
         msg = commands[message.content]()
     except KeyError:
-        msg = 'Invalid command - {}'.format(message.content)
+        msg = "Invalid command - {}".format(message.content)
 
     # Mention the user who issued the commands
-    msg = '{user} - {msg}'.format(
-        user=message.author.mention,
-        msg=msg
-    )
+    msg = "{user} - {msg}".format(user=message.author.mention, msg=msg)
 
     # Log and send the reply to the specified channel
     log_response(msg)
@@ -81,5 +82,6 @@ User ID: {}
 """
     print(startupMsg.format(client.user.name, client.user.id))
 
-print('Logging in...')
+
+print("Logging in...")
 client.run(config.dbot_access_token)
