@@ -3,7 +3,7 @@ from discord.ext import commands
 from config_loader import config
 
 
-class DbotDefaultCommands(commands.Cog):
+class DbotDefault(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -13,4 +13,4 @@ class DbotDefaultCommands(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(DbotDefaultCommands(bot))
+    bot.add_cog(DbotDefault(bot))
