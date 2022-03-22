@@ -1,7 +1,12 @@
+import logging
+
 try:
     import tomllib  # Python 3.11+ - PEP 680
 except ImportError:
     import tomli
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("Config Loader")
 
 with open("config.toml", "rb") as f:
     try:
