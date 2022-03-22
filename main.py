@@ -1,6 +1,6 @@
 """A small Discord bot framework."""
-import os
 import logging
+from pathlib import Path
 
 from discord.ext import commands
 
@@ -21,10 +21,10 @@ User ID: {0.id}
         # initialize discord.Client
         super().__init__(command_prefix=config["command_prefix"])
 
-        for plugin in os.listdir(plugins_dir):
-            if plugin != "__pycache__":
-                logger.info("Loading plugin: " + plugin)
-                self.load_extension("plugins.{0}".format(plugin))
+        for plugin in Path(plugins_dir).iterdir():
+            if plugin.stem != "__pycache__":
+                logger.info("Loading plugin: " + str(plugin))
+                self.load_extension("plugins." + plugin.stem)
 
     async def on_ready(self):
         print(Dbot.startupMsg.format(self.user))
