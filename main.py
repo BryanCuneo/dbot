@@ -1,6 +1,6 @@
-#!/usr/bin/python3
 """A small Discord bot framework."""
 import os
+import logging
 
 from discord.ext import commands
 
@@ -12,8 +12,8 @@ class Dbot(commands.Bot):
 DBot - A Discord bot by Bryan Cuneo.
 https://github.com/BryanCuneo/dbot
 
-Logged in as: {0.user}
-User ID: {0.user.id}
+Logged in as: {0}
+User ID: {0.id}
 ------
 """
 
@@ -23,19 +23,19 @@ User ID: {0.user.id}
 
         for plugin in os.listdir(plugins_dir):
             if plugin != "__pycache__":
+                logger.info("Loading plugin: " + plugin)
                 self.load_extension("plugins.{0}".format(plugin))
 
     async def on_ready(self):
-        print(Dbot.startupMsg.format(self))
-
+        print(Dbot.startupMsg.format(self.user))
 
 def main():
-    print("Initializing client...")
+    logger.info("Initializing client...")
     client = Dbot(config["plugins_dir"])
-
-    print("Logging in...", end="")
     client.run(config["dbot_access_token"])
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger("DBot")
     main()
