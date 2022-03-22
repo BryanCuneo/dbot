@@ -9,4 +9,4 @@ DBot began as a personal project in 2018. Though it served it's purpose at the t
 Coming soon.
 
 ## Plugins
-Plugins are how you add functionality to your bot. See [PLUGINS.md](plugins/PLUGINS.md) for more info.
+Plugins are how you add functionality to your bot. See [PLUGINS.md](PLUGINS.md) for more info.
