@@ -9,4 +9,4 @@ plugins_dir = "./plugins"
 # Text to be desplayed for the '!about' command.
 about_message = """
 DBot - A Discord bot framework by Bryan Cuneo
-https://github.com/BryanCuneo/dbot"""
+<https://github.com/BryanCuneo/dbot>"""
