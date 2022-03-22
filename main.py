@@ -4,18 +4,20 @@ from pathlib import Path
 
 from discord.ext import commands
 
-from config_loader import config
+from dbot_utilities import config_loader
 
 
 class Dbot(commands.Bot):
-    startupMsg = """
-DBot - A Discord bot by Bryan Cuneo.
-https://github.com/BryanCuneo/dbot
+    _startupMsg = """
+Built with DBot - A plugin-based Discord bot framework
+<https://github.com/BryanCuneo/dbot>
+
+Copyright 2018-2022 Bryan Cuneo
+https://www.gnu.org/licenses/agpl-3.0.en.html
 
 Logged in as: {0}
 User ID: {0.id}
-------
-"""
+------"""
 
     def __init__(self, plugins_dir):
         # initialize discord.Client
@@ -27,7 +29,7 @@ User ID: {0.id}
                 self.load_extension("plugins." + plugin.stem)
 
     async def on_ready(self):
-        print(Dbot.startupMsg.format(self.user))
+        print(Dbot._startupMsg.format(self.user))
 
 def main():
     logger.info("Initializing client...")
@@ -38,4 +40,7 @@ def main():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("DBot")
+
+    config = config_loader(Path(__file__).parent.joinpath("config.toml"))
+
     main()
