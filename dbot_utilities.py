@@ -14,6 +14,16 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def _time_diff(time_str):
+    format_str = "%H:%M:%S"
+    now = datetime.strftime(datetime.utcnow(), format_str)
+    tdelta = datetime.strptime(time_str, format_str) - datetime.strptime(
+        now, format_str
+    )
+
+    return tdelta.seconds
+
+
 def config_loader(path, warn_on_blank=True):
     with open(path, "rb") as f:
         try:
@@ -25,6 +35,30 @@ def config_loader(path, warn_on_blank=True):
     if warn_on_blank:
         for key in config.keys():
             if not config[key]:
-                logger.warn("{0}: configuration option '{1}' is blank".format(path, key))
+                logger.warn(
+                    "{0}: configuration option '{1}' is blank".format(path, key)
+                )
 
     return config
+
+
+# reminder = {
+#     "message": "Hello",
+#     "recur_on": ["sunday", "monday", "tuesday", "wednsday", "thursday", "friday", "saturday"],
+#     "time": "17:30:00"
+#     "channel": 1234
+# }
+def task_scheduler(bot, reminder):
+    @tasks.loop(hours=24)
+    async def fun():
+        channel = bot.get_channel(reminder["channel"])
+        today = datetime.now().strftime("%A").lower()
+        if today in (day.lower() for day in reminder["recur_on"]):
+            await channel.send(reminder["message"])
+
+    @fun.before_loop
+    async def before_fun():
+        seconds = _time_diff(reminder["time"])
+        await asyncio.sleep(seconds)
+
+    return fun
