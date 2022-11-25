@@ -24,7 +24,7 @@ def _time_diff(time_str):
     return tdelta.seconds
 
 
-def config_loader(path, warn_on_blank=True):
+def load_config(path="./config.toml", warn_on_blank=True):
     with open(path, "rb") as f:
         try:
             config = tomllib.load(f)
@@ -48,7 +48,7 @@ def config_loader(path, warn_on_blank=True):
 #     "time": "17:30:00"
 #     "channel": 1234
 # }
-def task_scheduler(bot, reminder):
+def schedule_task(bot, reminder):
     @tasks.loop(hours=24)
     async def fun():
         channel = bot.get_channel(reminder["channel"])

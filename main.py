@@ -1,13 +1,12 @@
 """A small Discord bot framework."""
-import logging
+# import logging
 from pathlib import Path
 
-from discord.ext import commands
+import discord
+from dbot_utilities import load_config
 
-from dbot_utilities import config_loader
 
-
-class Dbot(commands.Bot):
+class Dbot(discord.Bot):
     _startupMsg = """
 Built with DBot - A plugin-based Discord bot framework
 <https://github.com/BryanCuneo/dbot>
@@ -20,27 +19,22 @@ User ID: {0.id}
 ------"""
 
     def __init__(self, plugins_dir):
-        # initialize discord.Client
-        super().__init__(command_prefix=config["command_prefix"])
+        super().__init__()
 
         for plugin in Path(plugins_dir).iterdir():
             if plugin.stem != "__pycache__":
-                logger.info("Loading plugin: " + str(plugin))
+                # logger.info("Loading plugin: " + str(plugin))
                 self.load_extension("plugins." + plugin.stem)
 
     async def on_ready(self):
         print(Dbot._startupMsg.format(self.user))
 
+
 def main():
-    logger.info("Initializing client...")
-    client = Dbot(config["plugins_dir"])
-    client.run(config["dbot_access_token"])
+    bot = Dbot(config["plugins_dir"])
+    bot.run(config["discord_access_token"])
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("DBot")
-
-    config = config_loader(Path(__file__).parent.joinpath("config.toml"))
-
+    config = load_config()
     main()

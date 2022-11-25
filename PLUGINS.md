@@ -1,8 +1,8 @@
 # Plugins
-Plugins provide functionality to your bot via Discord.py [Extensions](https://discordpy.readthedocs.io/en/stable/ext/commands/extensions.html) and [Cogs](https://discordpy.readthedocs.io/en/stable/ext/commands/cogs.html#ext-commands-cogs) that are loaded automatically at runtime.
+Plugins provide functionality to your bot via [Extensions](https://docs.pycord.dev/en/stable/ext/commands/extensions.html) and [Cogs](https://docs.pycord.dev/en/stable/ext/commands/cogs.html) that are loaded automatically at runtime.
 
 ## Single-File
-A self-contained extension file. [dbot_default.py](/plugins/dbot_default.py) is a very basic single-file plugin that registers a simple command. 
+A self-contained extension file. [dice_roller.py](/plugins/dice_roller.py) is a very basic single-file plugin that registers a simple command.
 
 ## Multi-file
 If you wish to spread your plugin across multiple files, you can do so via subfolders within your plugins directory like so:
@@ -10,13 +10,12 @@ If you wish to spread your plugin across multiple files, you can do so via subfo
 ```
 dbot/
 ├─ plugins/
-│  ├─ dbot_default.py
-│  ├─ multi_file/
+│  ├─ multi_file_plugin/
 │  │  ├─ __init__.py
-│  │  ├─ extra_file.py
+│  │  ├─ do_stuff.py
+|  |  ├─ config.toml
 ```
 
-`__init__.py` is the entry point for the extension and is required.
+Check out the [recurring message scheduler](/plugins/recurring_messages) for an example of a multi-file plugin.
 
-
-# More sample plugins (including multi-line) coming soon™.
+`__init__.py` is the required entry point for multi-file plugins.
