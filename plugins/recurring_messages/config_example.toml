@@ -7,5 +7,5 @@ channel = 1234
 [[reminders]]
 message = "It is Wednesday, my dudes"
 recur_on = ["wednesday"]
-time = "00:00:00"
+time = "12:00:00"
 channel = 1234
