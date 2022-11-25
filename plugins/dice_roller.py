@@ -15,10 +15,6 @@ https://www.gnu.org/licenses/agpl-3.0.en.html"""
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command(description="Roll a die with any number of sides")
-    async def roll(self, ctx, num: int):
-        await ctx.respond(randrange(1, num + 1))
-
     @discord.slash_command(
         description="Roll dice with any number of sides. e.g. /roll 6 or /roll 3d8"
     )
