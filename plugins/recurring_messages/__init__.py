@@ -1,10 +1,12 @@
-from discord.ext import commands, tasks
+from pathlib import Path
 
-from dbot_utilities import config_loader, task_scheduler
+import discord
+
+from dbot_utilities import load_config, schedule_task
 
 
-class RecurringMessages(commands.Cog):
-    __config = config_loader(Path(__file__).parent.joinpath("config.toml"))
+class RecurringMessages(discord.Cog):
+    __config = load_config(Path(__file__).parent.joinpath("config.toml"))
 
     def __init__(self, bot, config):
         self.bot = bot
@@ -12,7 +14,7 @@ class RecurringMessages(commands.Cog):
 
         # Configurable reminders
         for reminder in self.config["reminders"]:
-            task = task_scheduler(self.bot, reminder)
+            task = schedule_task(self.bot, reminder)
             task.start()
 
         # Hardcoded reminder
@@ -22,11 +24,11 @@ class RecurringMessages(commands.Cog):
             "time": "12:00:00",
             "channel": 123,
         }
-        task = task_scheduler(self.bot, reminder)
+        task = schedule_task(self.bot, reminder)
         task.start()
 
 
 def setup(bot):
-    config = config_loader(Path(__file__).parent.joinpath("config.toml"))
+    config = load_config(Path(__file__).parent.joinpath("config.toml"))
 
     bot.add_cog(RecurringMessages(bot, config))
