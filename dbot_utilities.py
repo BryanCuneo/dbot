@@ -1,17 +1,17 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 
 from discord.ext import tasks
 
 try:
     import tomllib  # Python 3.11+ - PEP 680
 except ImportError:
-    import tomli
+    import tomli as tomllib
 
 
 def _time_diff(time_str):
     format_str = "%H:%M:%S"
-    now = datetime.strftime(datetime.utcnow(), format_str)
+    now = datetime.strftime(datetime.now(timezone.utc), format_str)
     tdelta = datetime.strptime(time_str, format_str) - datetime.strptime(
         now, format_str
     )
@@ -21,10 +21,7 @@ def _time_diff(time_str):
 
 def load_config(path="./config.toml", warn_on_blank=True):
     with open(path, "rb") as f:
-        try:
-            config = tomllib.load(f)
-        except NameError:
-            config = tomli.load(f)
+        config = tomllib.load(f)
 
     return config
 
@@ -48,6 +45,12 @@ def schedule_task(bot, reminder):
         # the message to the specified channel.  Otherwise, do nothing
         today = datetime.now().strftime("%A").lower()
         if today in (day.lower() for day in reminder["recur_on"]):
+            timestamp = datetime.now(timezone.utc).strftime("[%a %b %d, %H:%M:%S]")
+            print(
+                '{0} Running scheduled task: "{message}" in channel {channel}'.format(
+                    timestamp, **reminder
+                )
+            )
             await channel.send(reminder["message"])
 
     # Wait until the specified time to run
