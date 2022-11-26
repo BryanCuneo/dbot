@@ -13,7 +13,7 @@ class RecurringMessages(discord.Cog):
         # Configurable reminders
         for reminder in self.config["reminders"]:
             task = schedule_task(self.bot, reminder)
-            task.start()
+            # task.start()
 
         # Hardcoded reminder
         reminder = {
@@ -23,7 +23,7 @@ class RecurringMessages(discord.Cog):
             "channel": 123,
         }
         task = schedule_task(self.bot, reminder)
-        task.start()
+        # task.start()
 
 
 def setup(bot):

@@ -44,16 +44,29 @@ def load_config(path="./config.toml", warn_on_blank=True):
 #     "channel": 1234
 # }
 def schedule_task(bot, reminder):
+    """Create a function to run every 24 hours that will send a message in a
+    given channel on specified days.
+    """
+
+    # Specify to run once a day
     @tasks.loop(hours=24)
     async def fun():
         channel = bot.get_channel(reminder["channel"])
+        # If the current day is listed in the reminder's recur_on field, send
+        # the message to the specified channel.  Otherwise, do nothing
         today = datetime.now().strftime("%A").lower()
         if today in (day.lower() for day in reminder["recur_on"]):
             await channel.send(reminder["message"])
 
+    # Wait until the specified time to run
     @fun.before_loop
     async def before_fun():
         seconds = _time_diff(reminder["time"])
         await asyncio.sleep(seconds)
 
-    return fun
+    print(
+        'Registering scheduled task: Say "{message}" in channel {channel} at {time}UTC on:\n{recur_on}'.format(
+            **reminder
+        )
+    )
+    fun.start()
