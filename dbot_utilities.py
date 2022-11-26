@@ -26,14 +26,6 @@ def load_config(path="./config.toml", warn_on_blank=True):
         except NameError:
             config = tomli.load(f)
 
-    # Make sure all config options are present
-    if warn_on_blank:
-        for key in config.keys():
-            if not config[key]:
-                logger.warn(
-                    "{0}: configuration option '{1}' is blank".format(path, key)
-                )
-
     return config
 
 
