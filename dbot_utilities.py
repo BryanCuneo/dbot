@@ -57,7 +57,7 @@ def schedule_task(bot, reminder):
         await asyncio.sleep(seconds)
 
     print(
-        'Registering scheduled task: Say "{message}" in channel {channel} at {time}UTC on:\n{recur_on}'.format(
+        '  * Registering scheduled task: Say "{message}" in channel {channel} at {time}UTC on:\n    {recur_on}'.format(
             **reminder
         )
     )
