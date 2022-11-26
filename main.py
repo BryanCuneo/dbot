@@ -1,5 +1,4 @@
 """A small Discord bot framework."""
-# import logging
 from pathlib import Path
 
 import discord

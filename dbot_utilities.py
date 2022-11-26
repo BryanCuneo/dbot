@@ -1,7 +1,5 @@
 import asyncio
-import logging
 from datetime import datetime
-from pathlib import Path
 
 from discord.ext import tasks
 
@@ -9,9 +7,6 @@ try:
     import tomllib  # Python 3.11+ - PEP 680
 except ImportError:
     import tomli
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 def _time_diff(time_str):

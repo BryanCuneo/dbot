@@ -6,8 +6,6 @@ from dbot_utilities import load_config, schedule_task
 
 
 class RecurringMessages(discord.Cog):
-    __config = load_config(Path(__file__).parent.joinpath("config.toml"))
-
     def __init__(self, bot, config):
         self.bot = bot
         self.config = config
@@ -30,5 +28,4 @@ class RecurringMessages(discord.Cog):
 
 def setup(bot):
     config = load_config(Path(__file__).parent.joinpath("config.toml"))
-
     bot.add_cog(RecurringMessages(bot, config))
