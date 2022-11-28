@@ -10,6 +10,9 @@ except ImportError:
 
 
 def _time_diff(time_str):
+    """Calculate difference between now and the next occurance of a given
+    time string.
+    """
     format_str = "%H:%M:%S"
     now = datetime.strftime(datetime.now(timezone.utc), format_str)
     tdelta = datetime.strptime(time_str, format_str) - datetime.strptime(
@@ -19,24 +22,27 @@ def _time_diff(time_str):
     return tdelta.seconds
 
 
-def load_config(path="./config.toml", warn_on_blank=True):
+def load_config(path="./config.toml"):
+    """Load a configuration file (in the TOML format). Used in the main bot
+    and also available to each plugin.
+    """
     with open(path, "rb") as f:
         config = tomllib.load(f)
 
     return config
 
 
-# reminder = {
-#     "message": "Hello",
-#     "recur_on": ["sunday", "monday", "tuesday", "wednsday", "thursday", "friday", "saturday"],
-#     "time": "17:30:00"
-#     "channel": 1234
-# }
 def schedule_task(bot, reminder):
     """Create a function to run every 24 hours that will send a message in a
-    given channel on specified days.
-    """
+    given channel on specified days. Example reminder:
 
+    reminder = {
+        "message": "Hello",
+        "recur_on": ["sunday", "monday", "tuesday", "wednsday", "thursday", "friday", "saturday"],
+        "time": "17:30:00"
+        "channel": 1234
+    }
+    """
     # Specify to run once a day
     @tasks.loop(hours=24)
     async def fun():
@@ -53,9 +59,11 @@ def schedule_task(bot, reminder):
             )
             await channel.send(reminder["message"])
 
-    # Wait until the specified time to run
     @fun.before_loop
     async def before_fun():
+        """Lifecycle function to delay the first run until the time indicated
+        by the reminder's 'time' attribute.
+        """
         seconds = _time_diff(reminder["time"])
         await asyncio.sleep(seconds)
 
