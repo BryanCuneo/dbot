@@ -22,7 +22,7 @@ class {0}(discord.Cog):
 
     @_{1}_group.command(description="{3} commands")
     async def test(self, ctx):
-        ctx.respond(self.config["plugin_name"])
+        await ctx.respond(self.config["plugin_name"])
 
 def setup(bot):
     config = load_config(Path(__file__).parent.joinpath("config.toml"))
