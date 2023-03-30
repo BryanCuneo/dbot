@@ -10,7 +10,7 @@ class Dbot(discord.Bot):
 | Welcome to Dbot - A plugin-based Discord bot framework |
 | <https://github.com/BryanCuneo/dbot>                   |
 |                                                        |
-| Copyright 2018-2022 Bryan Cuneo                        |
+| Copyright 2018-2023 Bryan Cuneo                        |
 | https://www.gnu.org/licenses/agpl-3.0.en.html          |
 +--------------------------------------------------------+"""
     _ready_message = """
