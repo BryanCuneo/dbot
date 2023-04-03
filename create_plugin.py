@@ -47,7 +47,7 @@ class {0}(discord.Cog):
 
     @_{1}_group.command(description="{3} commands")
     async def test(self, ctx):
-        ctx.respond("{3}")
+        await ctx.respond("{3}")
 
 def setup(bot):
     bot.add_cog({0}(bot))
